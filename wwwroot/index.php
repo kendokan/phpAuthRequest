@@ -124,7 +124,7 @@ function logout() {
 
 // Fetches password hash from sqlite
 function getPasswordHash($username) {
-  $pdo = new \PDO('sqlite:phpAuthRequest.sqlite3');
+  $pdo = new \PDO('../sqlite:phpAuthRequest.sqlite3');
   $stmt = $pdo->prepare('SELECT password FROM users WHERE username=:username;');
   $stmt->bindValue(':username', $username);
   $stmt->execute();
