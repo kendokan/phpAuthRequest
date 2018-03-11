@@ -34,7 +34,6 @@
 body, html {
 	height: 100%;
 	font-family: Oswald-Regular, sans-serif;
-  background-color: #777 !important;
 }
 
 /*---------------------------------------------*/
@@ -184,7 +183,7 @@ iframe {
   align-items: center;
   padding: 15px;
   position: relative;
-  /* background-color: #e6e6e6; */
+  background-color: #e6e6e6;
 }
 
 .wrap-login100 {
