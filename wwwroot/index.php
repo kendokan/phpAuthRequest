@@ -25,6 +25,8 @@ function login($username, $password) {
 
     if (isset($_REQUEST['req']))
       header("Location: " . $_REQUEST['req']);
+  } else {
+    logout();
   }
 }
 
