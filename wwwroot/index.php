@@ -124,10 +124,11 @@ function logout() {
       $params["path"], $params["domain"],
       $params["secure"], $params["httponly"]
     );
-    header("Location: $baseUrl");
   }
 
   session_destroy();
+
+  header("Location: $baseUrl");
 }
 
 // Fetches password hash from sqlite
