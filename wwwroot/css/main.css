@@ -34,6 +34,11 @@
 body, html {
 	height: 100%;
 	font-family: Oswald-Regular, sans-serif;
+  background-image: url('https://source.unsplash.com/random/featured') !important;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter :progid:DXImageTransform.Microsoft.AlphaImageLoader(src='.image.jpg',sizingMethod='scale');
+  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='image.jpg',sizingMethod='scale')";
 }
 
 /*---------------------------------------------*/
@@ -183,7 +188,7 @@ iframe {
   align-items: center;
   padding: 15px;
   position: relative;
-  background-color: #e6e6e6;
+  /*background-color: #e6e6e6;*/
 }
 
 .wrap-login100 {
@@ -252,6 +257,7 @@ iframe {
   border-radius: 31px;
   position: relative;
   z-index: 1;
+  opacity: 0.6;
 }
 
 .input100 {
@@ -343,6 +349,7 @@ iframe {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  opacity: 0.8;
 }
 
 .login100-form-btn {
