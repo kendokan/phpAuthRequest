@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+$baseUrl = '/auth';
+$selfUrl = $baseUrl. $_SERVER['PHP_SELF'];
+
 // We want to check auth status as quickly as possible, and before any headers are sent, so do this first
 if (isset($_REQUEST['status']))
   if(getAuthStatus())
@@ -29,8 +32,9 @@ $loginForm = <<<EOT
 <div class="limiter">
 <div class="container-login100">
 <div class="wrap-login100 p-t-90 p-b-30">
-<form class="login100-form validate-form" name="login" action="{$_SERVER['PHP_SELF']}" method="post">
+<form class="login100-form validate-form" name="login" action="$selfUrl" method="post">
 <input type="hidden" name="login">
+<input type="hidden" name="req" value="{$_REQUEST['req']}">
 <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter your username">
 <input class="input100" type="text" name="username" placeholder="Username">
 <span class="focus-input100"></span>
@@ -57,7 +61,7 @@ $logoutForm = <<<EOT
 <div class="limiter">
 <div class="container-login100">
 <div class="wrap-login100 p-t-90 p-b-30">
-<form class="login100-form validate-form" action="{$_SERVER['PHP_SELF']}" method="post">
+<form class="login100-form validate-form" action="$selfUrl" method="post">
 <input type="hidden" name="logout">
 <div class="container-login100-form-btn">
 <button class="login100-form-btn">
@@ -100,7 +104,11 @@ function login() {
     session_regenerate_id(true);
     $_SESSION['phpAuthRequest-Authenticated'] = true;
     $_SESSION['phpAuthRequest-Timestamp'] = time();
-    header("Location: {$_SERVER['PHP_SELF']}");
+
+    if (isset($_REQUEST['req']))
+      header("Location: " . $_REQUEST['req']);
+    else
+      header("Location: $baseUrl");
   } else {
     logout();
   }
@@ -116,7 +124,7 @@ function logout() {
       $params["path"], $params["domain"],
       $params["secure"], $params["httponly"]
     );
-    header("Location: {$_SERVER['PHP_SELF']}");
+    header("Location: $baseUrl");
   }
 
   session_destroy();
@@ -124,9 +132,9 @@ function logout() {
 
 // Fetches password hash from sqlite
 function getPasswordHash($username) {
-  $pdo = new \PDO('../sqlite:phpAuthRequest.sqlite3');
+  $pdo = new \PDO('sqlite:../phpAuthRequest.sqlite3');
   $stmt = $pdo->prepare('SELECT password FROM users WHERE username=:username;');
-  $stmt->bindValue(':username', $username);
+  $stmt->bindParam(':username', $username);
   $stmt->execute();
   return $stmt->fetchColumn();
 }
