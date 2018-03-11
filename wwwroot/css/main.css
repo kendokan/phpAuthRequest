@@ -34,6 +34,7 @@
 body, html {
 	height: 100%;
 	font-family: Oswald-Regular, sans-serif;
+  background-color: #777 !important;
 }
 
 /*---------------------------------------------*/
@@ -75,7 +76,6 @@ ul, li {
 	margin: 0px;
 	list-style-type: none;
 }
-
 
 /*---------------------------------------------*/
 input {
@@ -184,9 +184,7 @@ iframe {
   align-items: center;
   padding: 15px;
   position: relative;
-  background-color: #e6e6e6;
-  /* background-color: #777 !important;
-	background-image: url('https://source.unsplash.com/random/featured') !important; */
+  /* background-color: #e6e6e6; */
 }
 
 .wrap-login100 {

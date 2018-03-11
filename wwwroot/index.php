@@ -26,6 +26,7 @@ else {
 <title>Authenticate</title>
 </head>
 <body onLoad="document.forms.login.username.focus()">
+<img src="images/background.jpg" id="bg" alt="" width="100%" height="100%">
 EOT;
 
 $loginForm = <<<EOT
