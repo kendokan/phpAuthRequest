@@ -1,6 +1,6 @@
 # phpAuthRequest
 
-![] (https://i.imgur.com/pbHwVp7.jpg)
+![](https://i.imgur.com/pbHwVp7.jpg)
 
 This is useful when you have one or more webapps that either lack authentication or whatever authentication they do have built-in is undesirable, for whatever reason.
 
