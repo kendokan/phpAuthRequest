@@ -1,12 +1,4 @@
 <?php
-/**
- * Todo:
- *
- * Error handling for database connection problems.
- * Admin console.
- * Allow user to change own password.
- *
- */
 
 
 // Adds HTML comments to page source containing $_SESSION and $_REQUEST dumps.
@@ -91,9 +83,8 @@ function logout() {
 
 /**
  * Connects to database and gets user's password hash.
- * @param  string $database database connection, in PDO syntax
  * @param  string $username username
- * @return string password hash
+ * @return array password hash and access level
  */
 function getPasswordHash($username) {
   $pdo = new \PDO(
