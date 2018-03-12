@@ -19,9 +19,9 @@ elseif(isset($_REQUEST['logout']))
 
 function login($username, $password) {
   if (password_verify($password, getPasswordHash($username))) {
-    session_regenerate_id(true);
     $_SESSION['phpAuthRequest-Authenticated'] = true;
     $_SESSION['phpAuthRequest-Timestamp'] = time();
+    session_regenerate_id(true);
 
     if (isset($_REQUEST['req']))
       header("Location: " . $_REQUEST['req']);
@@ -93,7 +93,7 @@ function getAuthStatus() {
   </div>
 <?php else: ?>
 <?php if (isset($_REQUEST['req'])): ?>
-          <input type="hidden" name="req" value="<?= $_REQUEST['req'] ?>"
+          <input type="hidden" name="req" value="<?= $_REQUEST['req'] ?>">
 <?php endif; ?>
           <input type="hidden" name="login">
           <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter your username">
@@ -125,6 +125,9 @@ function getAuthStatus() {
 <?php if (isset($debug)): ?>
 <!-- $_SESSION
 <?php var_dump($_SESSION); ?>
+-->
+<!-- $_REQUEST
+<?php var_dump($_REQUEST); ?>
 -->
 <?php endif; ?>
 </body>
