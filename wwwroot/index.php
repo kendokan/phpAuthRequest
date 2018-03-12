@@ -14,8 +14,8 @@ $debug = false;
 
 
 //Prepends path to PHP_SELF. Useful if calling this from NGINX proxy_pass.
-// $baseUrl = '/login';
-$baseUrl = '';
+// $baseUrl = '';
+$baseUrl = '/login';
 $selfUrl = $baseUrl . $_SERVER['PHP_SELF'];
 
 
