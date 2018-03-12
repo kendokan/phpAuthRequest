@@ -14,7 +14,8 @@ $debug = false;
 
 
 //Prepends path to PHP_SELF. Useful if calling this from NGINX proxy_pass.
-$baseUrl = '/login';
+// $baseUrl = '/login';
+$baseUrl = '';
 $selfUrl = $baseUrl . $_SERVER['PHP_SELF'];
 
 
@@ -60,9 +61,11 @@ if (isset($_REQUEST['action'])) {
  * @return null
  */
 function login($database, $redirect, $username, $password) {
-  if (password_verify($password, getPasswordHash($database, $username))) {
+  $res = getPasswordHash($database, $username);
+  if (password_verify($password, $res['password'])) {
     session_regenerate_id(true);
     $_SESSION['phpAuthRequest-Authenticated'] = true;
+    $_SESSION['phpAuthRequest-Access_Level'] = $res['access_level'];
     $_SESSION['phpAuthRequest-Timestamp'] = time();
 
     if (isset($redirect)) {
@@ -102,10 +105,11 @@ function logout() {
  */
 function getPasswordHash($database, $username) {
   $pdo = new \PDO($database['dsn'], $database['username'], $database['password']);
-  $stmt = $pdo->prepare('SELECT password FROM users WHERE username=:username;');
-  $stmt->bindParam(':username', $username);
+  $stmt = $pdo->prepare('SELECT password, access_level FROM users WHERE username=lower(:username);');
+  $stmt->bindParam(':username', strtolower($username));
   $stmt->execute();
-  return $stmt->fetchColumn();
+  // return $stmt->fetchColumn();
+  return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 
