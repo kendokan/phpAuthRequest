@@ -64,8 +64,10 @@ function login($database, $redirect, $username, $password) {
     $_SESSION['phpAuthRequest-Timestamp'] = time();
     session_regenerate_id(true);
 
-    if (isset($redirect))
+    if (isset($redirect)) {
       header("Location: " . $redirect);
+      exit();
+    }
   } else {
     logout();
   }
