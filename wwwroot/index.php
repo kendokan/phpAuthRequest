@@ -27,10 +27,6 @@ $database = array(
 );
 
 
-// Sanitize redirect URL if it exists.
-$redirect = isset($_REQUEST['redirect']) ? filter_var($_REQUEST['redirect']) : null;
-
-
 //  Session must be started before continuing.
 ini_set('session.use_strict_mode', '1');
 session_start();
@@ -43,7 +39,7 @@ if (isset($_REQUEST['action'])) {
       getAuthStatus() ? exit(http_response_code(200)) /* OK */ : exit(http_response_code(401)) /* Unauthorized */;
       break;
     case 'login':
-      login($database, $redirect, $_REQUEST['username'], $_REQUEST['password']);
+      login();
       break;
     case 'logout':
       logout();
@@ -54,24 +50,21 @@ if (isset($_REQUEST['action'])) {
 
 /**
  * Validates login credentials, and optionally redirects browser upon success.
- * @param  string $database database connection, in PDO syntax
- * @param  string $redirect redirect browser to this URI after login success
- * @param  string $username username
- * @param  string $password password
- * @return null
  */
-function login($database, $redirect, $username, $password) {
-  $res = getPasswordHash($database, $username);
-  if (password_verify($password, $res['password'])) {
+function login() {
+  $res = getPasswordHash($_REQUEST['username']);
+
+  if (password_verify($_REQUEST['password'], $res['password'])) {
     session_regenerate_id(true);
     $_SESSION['phpAuthRequest-Authenticated'] = true;
     $_SESSION['phpAuthRequest-Access_Level'] = $res['access_level'];
     $_SESSION['phpAuthRequest-Timestamp'] = time();
 
-    if (isset($redirect)) {
-      header("Location: " . $redirect);
+    if (!empty($_REQUEST['redirect'])) {
+      header("Location: " . $_REQUEST['redirect']);
       exit();
     }
+
   } else {
     logout();
   }
@@ -80,7 +73,6 @@ function login($database, $redirect, $username, $password) {
 
 /**
  * Removes cookies and destroys session.
- * @return null
  */
 function logout() {
   $_SESSION = array();
@@ -101,14 +93,19 @@ function logout() {
  * Connects to database and gets user's password hash.
  * @param  string $database database connection, in PDO syntax
  * @param  string $username username
- * @return string           password hash
+ * @return string password hash
  */
-function getPasswordHash($database, $username) {
-  $pdo = new \PDO($database['dsn'], $database['username'], $database['password']);
+function getPasswordHash($username) {
+  $pdo = new \PDO(
+    $GLOBALS['database']['dsn'],
+    $GLOBALS['database']['username'],
+    $GLOBALS['database']['password']
+  );
+
   $stmt = $pdo->prepare('SELECT password, access_level FROM users WHERE username=lower(:username);');
   $stmt->bindParam(':username', strtolower($username));
   $stmt->execute();
-  // return $stmt->fetchColumn();
+
   return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
@@ -117,14 +114,25 @@ function getPasswordHash($database, $username) {
  * Checks if an authenticated session exists. This function is called by
  * NGINX's auth_request on every single page load, so it needs to be _fast_.
  * Any delays in this function increase the user's page load time.
- * @return bool true if authenticated
+ * @return bool
  */
 function getAuthStatus() {
   if (isset($_SESSION['phpAuthRequest-Authenticated'])) {
+
+    // Regenerate the session ID after 15 minutes.
+    if (($_SESSION['phpAuthRequest-Authenticated'] + 900) > time())
+      session_regenerate_id(true);
+
+    // Clear the session after 24 hours.
     if (($_SESSION['phpAuthRequest-Timestamp'] + 86400) > time()) {
       $_SESSION['phpAuthRequest-Timestamp'] = time();
-      return true;
+      return(true);
+    } else {
+      logout();
+      return(false);
     }
+  } else {
+    return(false);
   }
 }
 ?>
@@ -158,8 +166,8 @@ function getAuthStatus() {
     </div>
   </div>
 <?php else: ?>
-<?php if (isset($redirect)): ?>
-          <input type="hidden" name="redirect" value="<?= $redirect ?>">
+<?php if (isset($_REQUEST['redirect'])): ?>
+          <input type="hidden" name="redirect" value="<?= $_REQUEST['redirect'] ?>">
 <?php endif; ?>
           <input type="hidden" name="action" value="login">
           <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter your username">

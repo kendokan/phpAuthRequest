@@ -1,5 +1,7 @@
 # phpAuthRequest
 
+![] (https://i.imgur.com/pbHwVp7.jpg)
+
 This is useful when you have one or more webapps that either lack authentication or whatever authentication they do have built-in is undesirable, for whatever reason.
 
 `NGINX` has the ability to authenticate each request with an external web site. Check out https://nginx.org/en/docs/http/ngx_http_auth_request_module.html for details on how that works.
