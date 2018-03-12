@@ -31,6 +31,7 @@ $redirect = isset($_REQUEST['redirect']) ? filter_var($_REQUEST['redirect']) : n
 
 
 //  Session must be started before continuing.
+ini_set('session.use_strict_mode', '1');
 session_start();
 
 
@@ -60,9 +61,9 @@ if (isset($_REQUEST['action'])) {
  */
 function login($database, $redirect, $username, $password) {
   if (password_verify($password, getPasswordHash($database, $username))) {
+    session_regenerate_id(true);
     $_SESSION['phpAuthRequest-Authenticated'] = true;
     $_SESSION['phpAuthRequest-Timestamp'] = time();
-    session_regenerate_id(true);
 
     if (isset($redirect)) {
       header("Location: " . $redirect);
