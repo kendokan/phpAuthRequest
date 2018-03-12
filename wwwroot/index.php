@@ -188,7 +188,7 @@ function getAuthStatus() {
   <script src="js/jquery-3.2.1.min.js"></script>
   <script src="js/main.js"></script>
 
-<?php if (isset($debug)): ?>
+<?php if ($debug === true): ?>
 <!-- $_SESSION
 <?php var_dump($_SESSION); ?>
 -->
