@@ -2,7 +2,7 @@
 session_start();
 
 // $debug = true;
-$baseUrl = '/auth';
+$baseUrl = '/login';
 $selfUrl = $baseUrl . $_SERVER['PHP_SELF'];
 
 
