@@ -87,17 +87,27 @@ function logout() {
  * @return array password hash and access level
  */
 function getPasswordHash($username) {
-  $pdo = new \PDO(
-    $GLOBALS['database']['dsn'],
-    $GLOBALS['database']['username'],
-    $GLOBALS['database']['password']
-  );
+  try {
+    $dbh = new \PDO(
+      $GLOBALS['database']['dsn'],
+      $GLOBALS['database']['username'],
+      $GLOBALS['database']['password']
+    );
 
-  $stmt = $pdo->prepare('SELECT password, access_level FROM users WHERE username=lower(:username);');
-  $stmt->bindParam(':username', strtolower($username));
-  $stmt->execute();
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  return $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $dbh->prepare('SELECT password, access_level FROM users WHERE username=lower(:username);');
+    $stmt->bindParam(':username', strtolower($username));
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+
+  } catch (PDOException $e) {
+    if ($GLOBALS['debug'] === true)
+      die($e->getMessage());
+    else
+      die("An unexpected error occured. I can't go on like this. Please try again later.");
+  }
 }
 
 

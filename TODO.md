@@ -1,5 +1,5 @@
-Error handling for database connection problems.
-
-Admin console.
+# TODO
 
 Allow user to change own password.
+
+Admin console.
