@@ -49,7 +49,7 @@ function login() {
   if (password_verify($_REQUEST['password'], $res['password'])) {
     session_regenerate_id(true);
     $_SESSION['phpAuthRequest-Authenticated'] = true;
-    $_SESSION['phpAuthRequest-Access_Level'] = $res['access_level'];
+    $_SESSION['phpAuthRequest-Access-Level'] = $res['access_level'];
     $_SESSION['phpAuthRequest-Timestamp'] = time();
 
     if (!empty($_REQUEST['redirect'])) {
@@ -110,9 +110,9 @@ function getPasswordHash($username) {
 function getAuthStatus() {
   if (isset($_SESSION['phpAuthRequest-Authenticated'])) {
 
-    // Regenerate the session ID after 15 minutes.
-    if (($_SESSION['phpAuthRequest-Authenticated'] + 900) > time())
-      session_regenerate_id(true);
+    // Fail if requested access level is lower than user's.
+    if (!empty($_REQUEST['access-level']) && $_REQUEST['access-level'] > $_SESSION['phpAuthRequest-Access-Level'])
+      return(false);
 
     // Clear the session after 24 hours.
     if (($_SESSION['phpAuthRequest-Timestamp'] + 86400) > time()) {
