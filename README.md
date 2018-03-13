@@ -8,7 +8,9 @@ This is useful when you have one or more webapps that either lack authentication
 `NGINX` has the ability to authenticate each request with another page. For example, if I try to browse to `https://site.local/`, `NGINX` can call another URL to see if it should allow access or not. If that other URL returns a 200, access is permitted. Anything else, and access is denied. This script provides that function, along with session login/logout utilities. Check out https://nginx.org/en/docs/http/ngx_http_auth_request_module.html for more details on how that works.
 
 ### Installation
-Create a database using the schema in `phpAuthRequest.sql`. I use `SQLite`, but any database that works with `PDO` should be fine (`MySQL`, `PostgreSQL`, etc.). A full list can be found at https://secure.php.net/manual/en/pdo.drivers.php.
+Use the `SQLite` database `phpAuthRequest.db` included for testing (username `admin`, password `admin`). Or, create your own database using the schema in `phpAuthRequest.sql`. Any database that works with `PDO` should be fine (`MySQL`, `PostgreSQL`, `SQLite`, etc.). A full list can be found at https://secure.php.net/manual/en/pdo.drivers.php.
+
+Passwords are hashed using `password_hash`. To generate a new password, do `php -r 'echo password_hash('the_password', PASSWORD_DEFAULT);'`. Adding web-based password management utilities is on to `TODO` list.
 
 I run this in its own Docker container called `phpauthrequest` in the example below. Proxy location `/login/` on your public web server to the container/server running `phpAuthRequest`. Below is a `NGINX` setup snippet for the public web server.
 

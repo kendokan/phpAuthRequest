@@ -13,7 +13,7 @@ $selfUrl = $baseUrl . $_SERVER['PHP_SELF'];
 
 // Database connection, in PDO syntax.
 $database = array(
-  'dsn'       => 'sqlite:../phpAuthRequest.sqlite3',
+  'dsn'       => 'sqlite:../phpAuthRequest.db',
   'username'  => null,
   'password'  => null
 );
