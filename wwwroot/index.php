@@ -131,13 +131,13 @@ function getAuthStatus() {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="css/util.css">
-  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="css/main.min.css">
+  <link rel="stylesheet" type="text/css" href="css/util.min.css">
   <title>Authenticate</title>
 </head>
 
-<body onLoad="document.forms.login.username.focus()">
+<body>
 
   <div class="limiter">
     <div class="container-login100">
@@ -183,9 +183,6 @@ function getAuthStatus() {
     </div>
   </div>
 <?php endif; ?>
-
-  <script src="js/jquery-3.2.1.min.js"></script>
-  <script src="js/main.js"></script>
 
 <?php if ($debug === true): ?>
 <!-- $_SESSION
