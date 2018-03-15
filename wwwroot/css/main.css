@@ -22,9 +22,6 @@
 body, html {
 	height: 100%;
 	font-family: Oswald-Regular, sans-serif;
-  background-image: url('https://source.unsplash.com/random/featured') !important;
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 
 /*---------------------------------------------*/

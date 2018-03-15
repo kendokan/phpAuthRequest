@@ -5,6 +5,10 @@
 $debug = false;
 
 
+// Use random image from Unsplash as background.
+$useUnsplash = true;
+
+
 //Prepends path to PHP_SELF. Useful if calling this from NGINX proxy_pass.
 // $baseUrl = '';
 $baseUrl = '/login';
@@ -145,6 +149,17 @@ function getAuthStatus() {
   <link rel="stylesheet" type="text/css" href="css/main.min.css">
   <link rel="stylesheet" type="text/css" href="css/util.min.css">
   <title>Authenticate</title>
+  <style>
+    body, html {
+<?php if ($useUnsplash == true): ?>
+      background-image: url('https://source.unsplash.com/random/featured') !important;
+      background-repeat: no-repeat;
+      background-size: cover;
+<?php else: ?>
+      background-color: #e6e6e6;
+<?php endif; ?>
+    }
+  </style>
 </head>
 
 <body>
